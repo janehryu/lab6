@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -8,11 +7,9 @@ var http = require('http');
 var path = require('path');
 var handlebars = require('express3-handlebars')
 
-var index = require('./routes/index');
-var project = require('./routes/project');
-var palette = require('./routes/palette');
 // Example route
 // var user = require('./routes/user');
+var homepageController = require("./routes/home_page");
 
 var app = express();
 
@@ -29,7 +26,7 @@ app.use(express.methodOverride());
 app.use(express.cookieParser('Intro HCI secret key'));
 app.use(express.session());
 app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'static')));
 
 // development only
 if ('development' == app.get('env')) {
@@ -37,12 +34,11 @@ if ('development' == app.get('env')) {
 }
 
 // Add routes here
-app.get('/', index.view);
-app.get('/project/:id', project.projectInfo);
-app.get('/palette', palette.randomPalette);
 // Example route
 // app.get('/users', user.list);
 
+app.get("/homepage", homepageController.index)
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
-});
+ });
